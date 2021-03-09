@@ -6,6 +6,7 @@ using Kanban.Logic.Dtos;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kanban.Logic.Services
@@ -17,6 +18,22 @@ namespace Kanban.Logic.Services
         public TaskService(KanbanDbContext dbContext)
         {
             this.dbContext = dbContext;
+        }
+
+        public IEnumerable<TaskDto> GetAll()
+        {
+            List<TaskDto> dtos = new List<TaskDto>();
+            foreach (var task in dbContext.Tasks)
+            {
+                dtos.Add(mapToDto(task));
+            }
+
+            return dtos;
+        }
+
+        public TaskDto GetById(int id)
+        {
+            return mapToDto(dbContext.Tasks.FirstOrDefault(task => task.Id == id));
         }
 
         public TaskDto CreateNewTask(CreateTaskDto dto)
@@ -37,34 +54,18 @@ namespace Kanban.Logic.Services
                     dto.State
                 );
         }
-        
-
-        public void DeleteTask(TaskDto dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TaskDto> GetAll()
-        {
-            List<TaskDto> dtos = new List<TaskDto>();
-            foreach(var task in dbContext.Tasks)
-            {
-                dtos.Add(mapToDto(task));
-            }
-
-            return dtos;
-        }
-
-        public TaskDto GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public TaskDto UpdateTask(TaskDto dto)
         {
             throw new NotImplementedException();
         }
 
+        public void DeleteTask(TaskDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        // private helper methods
         private TaskModel mapToModel(TaskDto dto)
         {
             return new TaskModel(

@@ -31,28 +31,28 @@ namespace Kanban.WEB.Controllers
 
         //GET -- return the data by id
         [HttpGet("{id}")]
-        public string GetById(int id)
+        public TaskDto GetById(int id)
         {
-            return null;
+            return taskService.GetById(id);
         }
 
         //POST -- get a dto form the http body and pass it to the logic layer for save
         [HttpPost]
-        public TaskDto AddNewTask([FromBody] CreateTaskDto dto)
+        public TaskDto CreateNewTask([FromBody] CreateTaskDto dto)
         {
             return taskService.CreateNewTask(dto);
         }
 
         //PUT -- update data 
         [HttpPut("{id}")]
-        public void Put([FromBody] string dto)
+        public void UpdateTask([FromBody] string dto)
         {
 
         }
 
         //DELETE -- delete TaskModel
         [HttpDelete("{id}")]
-        public void Delete([FromBody] string dto)
+        public void DeleteTask([FromBody] string dto)
         {
 
         }
