@@ -44,10 +44,10 @@ namespace Kanban.WEB.Controllers
         }
 
         //PUT -- update data 
-        [HttpPut("{id}")]
-        public void UpdateTask([FromBody] string dto)
+        [HttpPut]
+        public TaskDto UpdateTask([FromBody] TaskDto dto)
         {
-
+            return taskService.UpdateTask(dto);
         }
 
         //DELETE -- delete TaskModel

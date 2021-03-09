@@ -18,5 +18,7 @@ namespace Kanban.Logic.Dtos
             Description = description;
             State = state;
         }
+
+        public TaskDto() { }
     }
 }

@@ -57,7 +57,12 @@ namespace Kanban.Logic.Services
 
         public TaskDto UpdateTask(TaskDto dto)
         {
-            throw new NotImplementedException();
+            TaskModel taskToUpdate = dbContext.Tasks.FirstOrDefault(task => task.Id == dto.Id);
+            taskToUpdate.Title = dto.Title;
+            taskToUpdate.Description = dto.Description;
+            taskToUpdate.State = (State)Enum.Parse(typeof(State), dto.State);
+            dbContext.SaveChanges();
+            return dto;
         }
 
         public void DeleteTask(TaskDto dto)
