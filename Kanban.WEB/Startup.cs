@@ -27,6 +27,7 @@ namespace Kanban.WEB
                     o => o.UseSqlServer( Configuration.GetConnectionString( nameof(KanbanDbContext) )
                         )
                 );
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,10 +42,7 @@ namespace Kanban.WEB
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
