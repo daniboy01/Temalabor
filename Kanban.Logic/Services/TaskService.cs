@@ -67,21 +67,12 @@ namespace Kanban.Logic.Services
 
         public void DeleteTask(TaskDto dto)
         {
-            throw new NotImplementedException();
+            TaskModel task = dbContext.Tasks.FirstOrDefault(task => task.Id == dto.Id);
+            dbContext.Tasks.Remove(task);
+            dbContext.SaveChanges();
         }
 
         // private helper methods
-        private TaskModel mapToModel(TaskDto dto)
-        {
-            return new TaskModel(
-                    dto.Id,
-                    dto.Title,
-                    dto.Description,
-                    (State)Enum.Parse(typeof(State), dto.State)
-                );
-            ;
-        }
-
         private TaskDto mapToDto(TaskModel taskModel)
         {
             return new TaskDto(

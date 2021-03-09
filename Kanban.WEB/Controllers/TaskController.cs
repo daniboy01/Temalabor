@@ -22,39 +22,39 @@ namespace Kanban.WEB.Controllers
         }
 
 
-        //GET -- return with all the date from database
+        //GET api/tasks get all tasks from database
         [HttpGet]
         public IEnumerable<TaskDto> Get()
         {
             return taskService.GetAll();
         }
 
-        //GET -- return the data by id
+        //GET -- api/tasks/{id}
         [HttpGet("{id}")]
         public TaskDto GetById(int id)
         {
             return taskService.GetById(id);
         }
 
-        //POST -- get a dto form the http body and pass it to the logic layer for save
+        //POST -- api/tasks data from dto
         [HttpPost]
         public TaskDto CreateNewTask([FromBody] CreateTaskDto dto)
         {
             return taskService.CreateNewTask(dto);
         }
 
-        //PUT -- update data 
+        //PUT -- api/tasks data from dto
         [HttpPut]
         public TaskDto UpdateTask([FromBody] TaskDto dto)
         {
             return taskService.UpdateTask(dto);
         }
 
-        //DELETE -- delete TaskModel
-        [HttpDelete("{id}")]
-        public void DeleteTask([FromBody] string dto)
+        //DELETE -- api/tasks data from dto
+        [HttpDelete]
+        public void DeleteTask([FromBody] TaskDto dto)
         {
-
+            taskService.DeleteTask(dto);
         }
     }
 }
