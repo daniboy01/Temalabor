@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Kanban.DAL.Dtos;
+using Kanban.Logic.Dtos;
+using Kanban.Logic.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,12 +14,19 @@ namespace Kanban.WEB.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
+        private readonly ITaskService taskService;
+
+        public TaskController(ITaskService taskService)
+        {
+            this.taskService = taskService;
+        }
+
 
         //GET -- return with all the date from database
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<TaskDto> Get()
         {
-            return null;
+            return taskService.GetAll();
         }
 
         //GET -- return the data by id
@@ -28,9 +38,9 @@ namespace Kanban.WEB.Controllers
 
         //POST -- get a dto form the http body and pass it to the logic layer for save
         [HttpPost]
-        public void AddNewTask([FromBody] string dto)
+        public TaskDto AddNewTask([FromBody] CreateTaskDto dto)
         {
-
+            return taskService.CreateNewTask(dto);
         }
 
         //PUT -- update data 

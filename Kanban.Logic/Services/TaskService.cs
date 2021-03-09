@@ -1,5 +1,10 @@
-﻿using Kanban.Logic.Dtos;
+﻿
+using Kanban.DAL;
+using Kanban.DAL.Dtos;
+using Kanban.DAL.Models;
+using Kanban.Logic.Dtos;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,10 +12,32 @@ namespace Kanban.Logic.Services
 {
     public class TaskService : ITaskService
     {
-        public TaskDto CreateNewTask(TaskDto dto)
+        private readonly KanbanDbContext dbContext;
+
+        public TaskService(KanbanDbContext dbContext)
         {
-            throw new NotImplementedException();
+            this.dbContext = dbContext;
         }
+
+        public TaskDto CreateNewTask(CreateTaskDto dto)
+        {
+            var newModel = new TaskModel(
+                    dto.Title,
+                    dto.Description,
+                    (State)Enum.Parse(typeof(State), dto.State)
+                );
+
+            dbContext.Tasks.Add(newModel);
+            dbContext.SaveChanges();
+
+            return new TaskDto(
+                    newModel.Id,
+                    dto.Title,
+                    dto.Description,
+                    dto.State
+                );
+        }
+        
 
         public void DeleteTask(TaskDto dto)
         {
@@ -19,7 +46,13 @@ namespace Kanban.Logic.Services
 
         public IEnumerable<TaskDto> GetAll()
         {
-            throw new NotImplementedException();
+            List<TaskDto> dtos = new List<TaskDto>();
+            foreach(var task in dbContext.Tasks)
+            {
+                dtos.Add(mapToDto(task));
+            }
+
+            return dtos;
         }
 
         public TaskDto GetById(int id)
@@ -31,5 +64,27 @@ namespace Kanban.Logic.Services
         {
             throw new NotImplementedException();
         }
+
+        private TaskModel mapToModel(TaskDto dto)
+        {
+            return new TaskModel(
+                    dto.Id,
+                    dto.Title,
+                    dto.Description,
+                    (State)Enum.Parse(typeof(State), dto.State)
+                );
+            ;
+        }
+
+        private TaskDto mapToDto(TaskModel taskModel)
+        {
+            return new TaskDto(
+                    taskModel.Id,
+                    taskModel.Title,
+                    taskModel.Description,
+                    taskModel.State.ToString()
+                );
+        }
+
     }
 }
