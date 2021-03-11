@@ -22,18 +22,25 @@ namespace Kanban.Logic.Services
 
         public IEnumerable<TaskDto> GetAll()
         {
-            List<TaskDto> dtos = new List<TaskDto>();
-            foreach (var task in dbContext.Tasks)
+            return dbContext.Tasks.Select(t => new TaskDto
             {
-                dtos.Add(mapToDto(task));
-            }
-
-            return dtos;
+                Id = t.Id,
+                Title = t.Title,
+                Description = t.Description,
+                State = t.State.ToString()
+            }).ToList();
         }
 
         public TaskDto GetById(int id)
         {
-            return mapToDto(dbContext.Tasks.FirstOrDefault(task => task.Id == id));
+            return dbContext.Tasks.Where(t => t.Id == id).Select(
+                t => new TaskDto
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Description = t.Description,
+                State = t.State.ToString()
+            }).FirstOrDefault();
         }
 
         public TaskDto CreateNewTask(CreateTaskDto dto)
@@ -70,17 +77,6 @@ namespace Kanban.Logic.Services
             TaskModel task = dbContext.Tasks.FirstOrDefault(task => task.Id == dto.Id);
             dbContext.Tasks.Remove(task);
             dbContext.SaveChanges();
-        }
-
-        // private helper methods
-        private TaskDto mapToDto(TaskModel taskModel)
-        {
-            return new TaskDto(
-                    taskModel.Id,
-                    taskModel.Title,
-                    taskModel.Description,
-                    taskModel.State.ToString()
-                );
         }
 
     }
