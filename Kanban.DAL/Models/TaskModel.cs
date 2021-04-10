@@ -11,6 +11,10 @@ namespace Kanban.DAL.Models
         public string Description { get; set; }
         public State? State { get; set; }
 
+        public int? TaskColumnID { get; set; }
+
+        public TaskColumn? TaskColumn { get; set; }
+
         public TaskModel(string title, string description, State? state)
         {
             Title = title;

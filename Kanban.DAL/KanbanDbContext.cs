@@ -13,5 +13,7 @@ namespace Kanban.DAL
         public KanbanDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<TaskModel> Tasks { get; set; }
+
+        public DbSet<TaskColumn> TaskColumns { get; set; }
     }
 }
