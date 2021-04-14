@@ -45,11 +45,17 @@ namespace Kanban.Logic.Services
 
         public TaskDto CreateNewTask(CreateTaskDto dto)
         {
+            var inProgressCol = GetFolyamatbanColumn();
+
             var newModel = new TaskModel(
                     dto.Title,
                     dto.Description,
-                    (State)Enum.Parse(typeof(State), dto.State)
+                    State.FOLYAMATBAN
                 );
+
+            inProgressCol.Tasks.Add(newModel);
+            newModel.TaskColumn = inProgressCol;
+            newModel.TaskColumnID = inProgressCol.ID;
 
             dbContext.Tasks.Add(newModel);
             dbContext.SaveChanges();
@@ -58,7 +64,7 @@ namespace Kanban.Logic.Services
                     newModel.Id,
                     dto.Title,
                     dto.Description,
-                    dto.State
+                    newModel.State.ToString()
                 );
         }
 
@@ -67,14 +73,56 @@ namespace Kanban.Logic.Services
             TaskModel taskToUpdate = dbContext.Tasks.FirstOrDefault(task => task.Id == dto.Id);
             taskToUpdate.Title = dto.Title;
             taskToUpdate.Description = dto.Description;
-            taskToUpdate.State = (State)Enum.Parse(typeof(State), dto.State);
+            
+            if(taskToUpdate.State != (State)Enum.Parse(typeof(State), dto.State))
+            {
+                changeState(taskToUpdate, dto);
+            }
+
+
             dbContext.SaveChanges();
             return dto;
         }
 
-        public void DeleteTask(TaskDto dto)
+        private void changeState(TaskModel task, TaskDto dto)
         {
-            TaskModel task = dbContext.Tasks.FirstOrDefault(task => task.Id == dto.Id);
+            var col = dbContext.TaskColumns.FirstOrDefault(c =>c.State == task.State);
+            col.Tasks.Remove(task);
+
+            var newState = (State)Enum.Parse(typeof(State), dto.State);
+            task.State = newState;
+
+            var newCol = dbContext.TaskColumns.FirstOrDefault(c => c.State == (State)Enum.Parse(typeof(State), dto.State));
+            newCol.Tasks.Add(task);
+
+            dbContext.SaveChanges();
+
+        }
+
+        public TaskDto MakeTaskDone(int id)
+        {
+            var doneCol = dbContext.TaskColumns.FirstOrDefault(c => c.State == State.KÉSZ);
+
+            var col = GetFolyamatbanColumn();
+            var task = dbContext.Tasks.FirstOrDefault(t => t.Id == id);
+
+            col.Tasks.Remove(task);
+            task.State = State.KÉSZ;
+            doneCol.Tasks.Add(task);
+
+            dbContext.SaveChanges();
+
+            return new TaskDto(
+                    task.Id,
+                    task.Title,
+                    task.Description,
+                    task.State.ToString()
+                );
+        }
+
+        public void DeleteTask(int id)
+        {
+            TaskModel task = dbContext.Tasks.FirstOrDefault(task => task.Id == id);
             dbContext.Tasks.Remove(task);
             dbContext.SaveChanges();
         }
@@ -150,6 +198,21 @@ namespace Kanban.Logic.Services
                     column.State.ToString(),
                     mapTasksToDto(column.Tasks)
                 );
+        }
+
+        private TaskColumn GetFolyamatbanColumn()
+        {
+            var col =  dbContext.TaskColumns.FirstOrDefault(c => c.State == State.FOLYAMATBAN);
+
+            if(col == null)
+            {
+                TaskColumn column = new TaskColumn(State.FOLYAMATBAN);
+                dbContext.TaskColumns.Add(column);
+                dbContext.SaveChanges();
+                return column;
+            }
+
+            return col;
         }
 
     }

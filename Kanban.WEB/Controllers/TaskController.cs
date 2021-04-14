@@ -51,10 +51,16 @@ namespace Kanban.WEB.Controllers
         }
 
         //DELETE -- api/tasks data from dto
-        [HttpDelete]
-        public void DeleteTask([FromBody] TaskDto dto)
+        [HttpDelete("{id}")]
+        public void DeleteTask(int id)
         {
-            taskService.DeleteTask(dto);
+            taskService.DeleteTask(id);
+        }
+
+        [HttpPost("{id}")]
+        public TaskDto MakeTaskDone(int id)
+        {
+            return taskService.MakeTaskDone(id);
         }
     }
 }
