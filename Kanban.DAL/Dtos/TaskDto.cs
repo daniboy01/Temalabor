@@ -11,12 +11,17 @@ namespace Kanban.Logic.Dtos
         public string Description { get; set; }
         public string State { get; set; }
 
-        public TaskDto(int id, string title, string description, string state)
+        public string CreatedAt { get; set; }
+
+
+        public TaskDto(int id, string title, string description, 
+            string state, string createdAt)
         {
             Id = id;
             Title = title;
             Description = description;
             State = state;
+            CreatedAt = createdAt;
         }
 
         public TaskDto() { }

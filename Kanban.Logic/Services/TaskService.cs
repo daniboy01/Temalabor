@@ -27,7 +27,8 @@ namespace Kanban.Logic.Services
                 Id = t.Id,
                 Title = t.Title,
                 Description = t.Description,
-                State = t.State.ToString()
+                State = t.State.ToString(),
+                CreatedAt = t.CreatedAt.ToString("MM/dd/yyyy HH:mm"),
             }).ToList();
         }
 
@@ -35,12 +36,13 @@ namespace Kanban.Logic.Services
         {
             return dbContext.Tasks.Where(t => t.Id == id).Select(
                 t => new TaskDto
-            {
-                Id = t.Id,
-                Title = t.Title,
-                Description = t.Description,
-                State = t.State.ToString()
-            }).FirstOrDefault();
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    State = t.State.ToString(),
+                    CreatedAt = t.CreatedAt.ToString("MM/dd/yyyy HH:mm"),
+                }).FirstOrDefault();
         }
 
         public TaskDto CreateNewTask(CreateTaskDto dto)
@@ -60,11 +62,17 @@ namespace Kanban.Logic.Services
             dbContext.Tasks.Add(newModel);
             dbContext.SaveChanges();
 
+            return CreateTaskDto(newModel);
+        }
+
+        private TaskDto CreateTaskDto(TaskModel model)
+        {
             return new TaskDto(
-                    newModel.Id,
-                    dto.Title,
-                    dto.Description,
-                    newModel.State.ToString()
+                    model.Id,
+                    model.Title,
+                    model.Description,
+                    model.State.ToString(),
+                    model.CreatedAt.ToString("MM/dd/yyyy HH:mm")
                 );
         }
 
@@ -116,7 +124,8 @@ namespace Kanban.Logic.Services
                     task.Id,
                     task.Title,
                     task.Description,
-                    task.State.ToString()
+                    task.State.ToString(),
+                    task.CreatedAt.ToString()
                 );
         }
 
@@ -183,7 +192,8 @@ namespace Kanban.Logic.Services
                     Id = t.Id,
                     Title = t.Title,
                     Description = t.Description,
-                    State = t.State.ToString()
+                    State = t.State.ToString(),
+                    CreatedAt = t.CreatedAt.ToString("MM/dd/yyyy HH:mm")
                 };
 
                 dtos.Add(dto);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Kanban.DAL.Models
@@ -11,6 +12,10 @@ namespace Kanban.DAL.Models
         public string Description { get; set; }
         public State? State { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+        public DateTime? DeadLine { get; set; }
+
+
         public int? TaskColumnID { get; set; }
 
         public TaskColumn? TaskColumn { get; set; }
@@ -20,6 +25,7 @@ namespace Kanban.DAL.Models
             Title = title;
             Description = description;
             State = state;
+            CreatedAt = DateTime.Now;
         }
 
         public TaskModel(int id, string title, string description, State? state)
