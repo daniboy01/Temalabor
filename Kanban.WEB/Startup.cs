@@ -1,4 +1,5 @@
 using Kanban.DAL;
+using Kanban.DAL.Repositories;
 using Kanban.Logic.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +27,8 @@ namespace Kanban.WEB
             services.AddControllers();
 
             services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<ITaskRepoitory, TaskRepository>();
+            services.AddScoped<IColumnRepository, ColumnRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
