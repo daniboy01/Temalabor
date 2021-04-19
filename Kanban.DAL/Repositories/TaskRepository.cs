@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Kanban.DAL.Repositories
 {
-    public class TaskRepository : ITaskRepoitory
+    public class TaskRepository : ITaskRepository
     {
         private readonly KanbanDbContext dbContext;
 

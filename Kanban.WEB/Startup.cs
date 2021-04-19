@@ -27,7 +27,7 @@ namespace Kanban.WEB
             services.AddControllers();
 
             services.AddScoped<ITaskService, TaskService>();
-            services.AddScoped<ITaskRepoitory, TaskRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IColumnRepository, ColumnRepository>();
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Kanban.DAL.Repositories
 {
-    public interface ITaskRepoitory
+    public interface ITaskRepository
     {
         IEnumerable<TaskDto> GetAll();
         TaskDto GetById(int id);

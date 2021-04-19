@@ -1,8 +1,12 @@
 using Kanban.DAL;
 using Kanban.DAL.Dtos;
+using Kanban.DAL.Models;
+using Kanban.DAL.Repositories;
+using Kanban.Logic.Dtos;
 using Kanban.Logic.Services;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -11,29 +15,63 @@ namespace Kanban.Tests
     public class TaskServiceTests
     {
         private readonly TaskService taskService;
-        private readonly Mock<KanbanDbContext> _kanbanDbContextMock = new Mock<KanbanDbContext>();
+        private readonly Mock<ITaskRepository> _taskRepoMock = new Mock<ITaskRepository>();
+        private readonly Mock<IColumnRepository> _columnRepoMock = new Mock<IColumnRepository>();
 
         public TaskServiceTests()
         {
-            taskService = new TaskService(_kanbanDbContextMock.Object);
+            taskService = new TaskService(_taskRepoMock.Object, _columnRepoMock.Object);
         }
 
         [Fact]
-        public void GetAll_ShouldReturn_1()
+        public void GetByIdTest()
         {
-            var newTask = new CreateTaskDto
-            {
-                Title = "teszt",
-                Description = "tesztelelk"
-            };
+            var taskId = 1;
 
+            var taskDto = new TaskDto(
+                    taskId,
+                    "tesztCím",
+                    "tesztLeírás",
+                    "FOLYAMATBAN",
+                    "04/19/2021 17:30"
+                );
 
+            _taskRepoMock.Setup(x => x.GetById(taskId))
+                .Returns(taskDto);
 
-            taskService.CreateNewTask(newTask);
+            var task = taskService.GetById(taskId);
+
+            Assert.Equal(taskId, task.Id);
+            Assert.Equal("tesztCím", task.Title);
+        }
+
+        [Fact]
+        public void GetAllTest()
+        {
+            List<TaskDto> dtos = new List<TaskDto>();
+            dtos.Add(new TaskDto(1,
+                    "tesztCím",
+                    "tesztLeírás",
+                    "FOLYAMATBAN",
+                    "04/19/2021 17:30"));
+            dtos.Add(new TaskDto(1,
+                    "tesztCím2",
+                    "tesztLeírás2",
+                    "FOLYAMATBAN",
+                    "04/19/2021 17:30"));
+            dtos.Add(new TaskDto(1,
+                    "tesztCím3",
+                    "tesztLeírás3",
+                    "FOLYAMATBAN",
+                    "04/19/2021 17:30"));
+
+            _taskRepoMock.Setup(x => x.GetAll()).Returns(dtos);
 
             var allTask = taskService.GetAll();
 
-            Assert.Equal(1, allTask.Count());
+            Assert.Equal(3, dtos.Count);
+            Assert.Equal(dtos[1].Title, dtos[1].Title);
+
         }
 
     }

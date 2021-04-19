@@ -12,10 +12,10 @@ namespace Kanban.Logic.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly ITaskRepoitory taskRepoitory;
+        private readonly ITaskRepository taskRepoitory;
         private readonly IColumnRepository columnRepoitory;
 
-        public TaskService(ITaskRepoitory taskRepoitory, 
+        public TaskService(ITaskRepository taskRepoitory, 
             IColumnRepository columnRepoitory)
         {
             this.taskRepoitory = taskRepoitory;
