@@ -1,8 +1,5 @@
-﻿using Kanban.DAL.Models;
-using Kanban.Logic.Dtos;
-using System;
+﻿using Kanban.Logic.Dtos;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Kanban.DAL.Dtos
 {

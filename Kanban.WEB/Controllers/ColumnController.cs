@@ -1,12 +1,8 @@
 ﻿using Kanban.DAL.Dtos;
 using Kanban.Logic.Dtos;
 using Kanban.Logic.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Kanban.WEB.Controllers
 {
@@ -36,7 +32,7 @@ namespace Kanban.WEB.Controllers
         }
 
         [HttpPost("{id}")]
-        public TaskColumnDto AddTaskToColumn(int id,[FromBody] TaskDto taskDto)
+        public TaskColumnDto AddTaskToColumn(int id, [FromBody] TaskDto taskDto)
         {
             return taskService.AddTaskToColumn(id, taskDto);
         }

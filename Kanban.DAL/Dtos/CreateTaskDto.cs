@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kanban.DAL.Dtos
+﻿namespace Kanban.DAL.Dtos
 {
     public class CreateTaskDto
     {

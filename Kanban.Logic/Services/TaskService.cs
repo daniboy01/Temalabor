@@ -4,10 +4,8 @@ using Kanban.DAL.Dtos;
 using Kanban.DAL.Models;
 using Kanban.Logic.Dtos;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Kanban.Logic.Services
 {
@@ -81,10 +79,10 @@ namespace Kanban.Logic.Services
             TaskModel taskToUpdate = dbContext.Tasks.FirstOrDefault(task => task.Id == dto.Id);
             taskToUpdate.Title = dto.Title;
             taskToUpdate.Description = dto.Description;
-            
-            if(taskToUpdate.State != (State)Enum.Parse(typeof(State), dto.State))
+
+            if (taskToUpdate.State != (State)Enum.Parse(typeof(State), dto.State))
             {
-                changeState(taskToUpdate, dto);
+                ChangeState(taskToUpdate, dto);
             }
 
 
@@ -92,9 +90,9 @@ namespace Kanban.Logic.Services
             return dto;
         }
 
-        private void changeState(TaskModel task, TaskDto dto)
+        private void ChangeState(TaskModel task, TaskDto dto)
         {
-            var col = dbContext.TaskColumns.FirstOrDefault(c =>c.State == task.State);
+            var col = dbContext.TaskColumns.FirstOrDefault(c => c.State == task.State);
             col.Tasks.Remove(task);
 
             var newState = (State)Enum.Parse(typeof(State), dto.State);
@@ -141,7 +139,7 @@ namespace Kanban.Logic.Services
             return dbContext.TaskColumns.Select(c => new TaskColumnDto(
                 c.ID,
                 c.State.ToString(),
-                mapTasksToDto(c.Tasks)
+                MapTasksToDto(c.Tasks)
                 ));
         }
 
@@ -155,11 +153,11 @@ namespace Kanban.Logic.Services
             return new TaskColumnDto(
                     column.ID,
                     column.State.ToString(),
-                    mapTasksToDto(column.Tasks)
+                    MapTasksToDto(column.Tasks)
                 );
         }
 
-        public TaskColumnDto AddTaskToColumn(int id,TaskDto dto)
+        public TaskColumnDto AddTaskToColumn(int id, TaskDto dto)
         {
             TaskColumn column = dbContext.TaskColumns.Where(c => c.ID == id).FirstOrDefault();
             TaskModel task = dbContext.Tasks.Where(t => t.Id == dto.Id).FirstOrDefault();
@@ -170,7 +168,7 @@ namespace Kanban.Logic.Services
 
             dbContext.SaveChanges();
 
-            return mapColumnToDto(column);
+            return MapColumnToDto(column);
         }
 
         public void DeleteColumn(int id)
@@ -180,12 +178,12 @@ namespace Kanban.Logic.Services
             dbContext.SaveChanges();
         }
 
-        private static IEnumerable<TaskDto> mapTasksToDto(IEnumerable<TaskModel> tasks)
+        private static IEnumerable<TaskDto> MapTasksToDto(IEnumerable<TaskModel> tasks)
         {
             List<TaskDto> dtos = new List<TaskDto>();
 
 
-            foreach(TaskModel t in tasks)
+            foreach (TaskModel t in tasks)
             {
                 TaskDto dto = new TaskDto
                 {
@@ -201,20 +199,20 @@ namespace Kanban.Logic.Services
 
             return dtos;
         }
-        private TaskColumnDto mapColumnToDto(TaskColumn column)
+        private TaskColumnDto MapColumnToDto(TaskColumn column)
         {
             return new TaskColumnDto(
                     column.ID,
                     column.State.ToString(),
-                    mapTasksToDto(column.Tasks)
+                    MapTasksToDto(column.Tasks)
                 );
         }
 
         private TaskColumn GetFolyamatbanColumn()
         {
-            var col =  dbContext.TaskColumns.FirstOrDefault(c => c.State == State.FOLYAMATBAN);
+            var col = dbContext.TaskColumns.FirstOrDefault(c => c.State == State.FOLYAMATBAN);
 
-            if(col == null)
+            if (col == null)
             {
                 TaskColumn column = new TaskColumn(State.FOLYAMATBAN);
                 dbContext.TaskColumns.Add(column);

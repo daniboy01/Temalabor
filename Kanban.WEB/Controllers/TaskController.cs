@@ -1,12 +1,8 @@
 ﻿using Kanban.DAL.Dtos;
 using Kanban.Logic.Dtos;
 using Kanban.Logic.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Kanban.WEB.Controllers
 {

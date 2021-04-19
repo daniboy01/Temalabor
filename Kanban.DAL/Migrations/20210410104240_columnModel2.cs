@@ -2,7 +2,7 @@
 
 namespace Kanban.DAL.Migrations
 {
-    public partial class columnModel2 : Migration
+    public partial class ColumnModel2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

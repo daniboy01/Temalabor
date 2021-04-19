@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kanban.Logic.Dtos
+﻿namespace Kanban.Logic.Dtos
 {
     public class TaskDto
     {
@@ -14,7 +10,7 @@ namespace Kanban.Logic.Dtos
         public string CreatedAt { get; set; }
 
 
-        public TaskDto(int id, string title, string description, 
+        public TaskDto(int id, string title, string description,
             string state, string createdAt)
         {
             Id = id;

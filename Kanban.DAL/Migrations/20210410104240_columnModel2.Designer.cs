@@ -10,7 +10,7 @@ namespace Kanban.DAL.Migrations
 {
     [DbContext(typeof(KanbanDbContext))]
     [Migration("20210410104240_columnModel2")]
-    partial class columnModel2
+    partial class ColumnModel2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
