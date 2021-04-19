@@ -74,5 +74,29 @@ namespace Kanban.Tests
 
         }
 
+        [Fact]
+        public void CreateNewTaskTest()
+        {
+            var createDto = new CreateTaskDto
+            {
+                Title = "teszt",
+                Description = "elek"
+            };
+
+            var responseDto = new TaskDto(
+                    1,
+                    "teszt",
+                    "elek",
+                    "FOLYAMATBAN",
+                    "04/19/2021 17:30"
+                );
+
+            _taskRepoMock.Setup(x => x.CreateNewTask(createDto)).Returns(responseDto);
+
+            var result = taskService.CreateNewTask(createDto);
+
+            Assert.Equal(1, result.Id);
+        }
+
     }
 }
