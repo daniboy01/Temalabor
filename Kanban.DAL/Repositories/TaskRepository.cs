@@ -68,6 +68,12 @@ namespace Kanban.DAL.Repositories
             taskToUpdate.Title = dto.Title;
             taskToUpdate.Description = dto.Description;
 
+            if(dto.State == null)
+            {
+                dto.State = taskToUpdate.State.ToString();
+                return dto;
+            }
+
             if (taskToUpdate.State != (State)Enum.Parse(typeof(State), dto.State))
             {
                 ChangeState(taskToUpdate, dto);
