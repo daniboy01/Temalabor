@@ -52,11 +52,20 @@ namespace Kanban.DAL.Repositories
             return MapColumnToDto(column);
         }
 
-        public void DeleteColumn(int id)
+        public bool ColumnIsExist(int id)
         {
-            var column = dbContext.TaskColumns.FirstOrDefault(c => c.ID == id);
+            return dbContext.TaskColumns.Any(c => c.ID == id);
+        }
+
+
+        public TaskColumnDto DeleteColumn(TaskColumnDto dto)
+        {
+            var column = dbContext.TaskColumns.FirstOrDefault(c => c.ID == dto.ID);
+
             dbContext.TaskColumns.Remove(column);
             dbContext.SaveChanges();
+
+            return MapColumnToDto(column);
         }
 
         public TaskDto MakeTaskDone(int id)
@@ -126,6 +135,10 @@ namespace Kanban.DAL.Repositories
             return col;
         }
 
-
+        public TaskColumnDto GetById(int id)
+        {
+            var column = dbContext.TaskColumns.FirstOrDefault(c => c.ID == id);
+            return MapColumnToDto(column);
+        }
     }
 }

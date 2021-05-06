@@ -62,6 +62,11 @@ namespace Kanban.DAL.Repositories
                 }).FirstOrDefault();
         }
 
+        public bool TaskIsExist(int id)
+        {
+            return dbContext.Tasks.Any(t => t.Id == id);
+        }
+
         public TaskDto UpdateTask(TaskDto dto)
         {
             TaskModel taskToUpdate = dbContext.Tasks.FirstOrDefault(task => task.Id == dto.Id);

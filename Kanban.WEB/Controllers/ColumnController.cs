@@ -19,29 +19,44 @@ namespace Kanban.WEB.Controllers
 
         //GET api/columns
         [HttpGet]
-        public IEnumerable<TaskColumnDto> Get()
+        public ActionResult<IEnumerable<TaskColumnDto>> Get()
         {
-            return taskService.GetTaskColumns();
+            return Ok(taskService.GetTaskColumns());
         }
 
         //POST api/columns
         [HttpPost]
-        public TaskColumnDto CreateNewColumn([FromBody] CreateTaskColumnDto dto)
+        public ActionResult<TaskColumnDto> CreateNewColumn([FromBody] CreateTaskColumnDto dto)
         {
-            return taskService.CreateNewColumn(dto);
+            if(dto == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(taskService.CreateNewColumn(dto));
         }
 
         [HttpPost("{id}")]
-        public TaskColumnDto AddTaskToColumn(int id, [FromBody] TaskDto taskDto)
+        public ActionResult<TaskColumnDto> AddTaskToColumn(int id, [FromBody] TaskDto taskDto)
         {
-            return taskService.AddTaskToColumn(id, taskDto);
+            if(!taskService.TaskIsExist(taskDto.Id) || !taskService.ColumnIsExist(id))
+            {
+                return NotFound();
+            }
+
+            return Ok(taskService.AddTaskToColumn(id, taskDto));
         }
 
         //DELETE api/columns/{id}
         [HttpDelete("{id}")]
-        public void DeleteColumn(int id)
+        public ActionResult<TaskColumnDto> DeleteColumn(int id)
         {
-            taskService.DeleteColumn(id);
+            if (!taskService.ColumnIsExist(id))
+            {
+                return NotFound($"Column with id: {id} not found!");
+            }
+
+            return Ok(taskService.DeleteColumn(id));
         }
     }
 }

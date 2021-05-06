@@ -9,9 +9,11 @@ namespace Kanban.DAL.Repositories
     public interface IColumnRepository
     {
         IEnumerable<TaskColumnDto> GetTaskColumns();
+        TaskColumnDto GetById(int id);
         TaskColumnDto CreateNewColumn(CreateTaskColumnDto dto);
         TaskColumnDto AddTaskToColumn(int id, TaskDto dto);
-        void DeleteColumn(int id);
+        TaskColumnDto DeleteColumn(TaskColumnDto dto);
         TaskDto MakeTaskDone(int id);
+        bool ColumnIsExist(int id);
     }
 }

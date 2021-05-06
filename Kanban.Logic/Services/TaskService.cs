@@ -69,10 +69,21 @@ namespace Kanban.Logic.Services
             return columnRepoitory.AddTaskToColumn(id, dto);
         }
 
-        public void DeleteColumn(int id)
+        public TaskColumnDto DeleteColumn(int id)
         {
-            columnRepoitory.DeleteColumn(id);
+            var columnToDelete = columnRepoitory.GetById(id);
+
+            return columnRepoitory.DeleteColumn(columnToDelete);
         }
 
+        public bool ColumnIsExist(int id)
+        {
+            return columnRepoitory.ColumnIsExist(id);
+        }
+
+        public bool TaskIsExist(int id)
+        {
+            return taskRepoitory.TaskIsExist(id);
+        }
     }
 }

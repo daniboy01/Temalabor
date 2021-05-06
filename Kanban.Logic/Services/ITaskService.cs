@@ -14,7 +14,9 @@ namespace Kanban.Logic.Services
         IEnumerable<TaskColumnDto> GetTaskColumns();
         TaskColumnDto CreateNewColumn(CreateTaskColumnDto dto);
         TaskColumnDto AddTaskToColumn(int id, TaskDto dto);
-        void DeleteColumn(int id);
+        TaskColumnDto DeleteColumn(int id);
         TaskDto MakeTaskDone(int id);
+        bool ColumnIsExist(int id);
+        bool TaskIsExist(int id);
     }
 }
