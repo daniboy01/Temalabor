@@ -98,5 +98,59 @@ namespace Kanban.Tests
             Assert.Equal(1, result.Id);
         }
 
+        [Fact]
+        public void GetTaskColumnsTest_ShouldReturnTwoColumns()
+        {
+            List<TaskColumnDto> dtos = new List<TaskColumnDto>();
+
+            dtos.Add (new TaskColumnDto (1, "FOLYMATBAN", new List<TaskDto>()));
+            dtos.Add (new TaskColumnDto (2, "KÉSZ", new List<TaskDto>()));
+
+            _columnRepoMock.Setup(x => x.GetTaskColumns())
+                .Returns(dtos);
+
+            var cols = taskService.GetTaskColumns();
+
+            Assert.Equal(2, cols.Count());
+        }
+
+        [Fact]
+        public void AddTasktoColumnTest_ShouldReturnOneColumnWithOneTask()
+        {
+            List<TaskDto> dtos = new List<TaskDto>();
+
+            var taskDto = new TaskDto(
+                    1,
+                    "teszt",
+                    "elek",
+                    "FOLYAMATBAN",
+                    "04/19/2021 17:30"
+                );
+            dtos.Add(taskDto);
+
+            var columnDto = new TaskColumnDto(1, "FOLYMATBAN", dtos);
+
+            _columnRepoMock.Setup(x => x.AddTaskToColumn(columnDto.ID, taskDto)).Returns(columnDto);
+
+            var result = taskService.AddTaskToColumn(columnDto.ID, taskDto);
+
+            Assert.Single(columnDto.Tasks);
+
+        }
+
+        [Fact]
+        public void CreateNewTaskColumnTest_ShouldReturnOneColumn_WithEmptyTaskList()
+        {
+            var columnDto = new TaskColumnDto(1, "FOLYAMATBAN", new List<TaskDto>());
+            var createColumnDto = new CreateTaskColumnDto { State = "FOLYAMATBAN" };
+
+            _columnRepoMock.Setup(x => x.CreateNewColumn(createColumnDto)).Returns(columnDto);
+
+            var result = taskService.CreateNewColumn(createColumnDto);
+
+            Assert.Equal(1, result.ID);
+            Assert.Equal("FOLYAMATBAN", result.State);
+        }
+
     }
 }
