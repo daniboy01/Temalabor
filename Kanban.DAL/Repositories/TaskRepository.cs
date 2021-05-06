@@ -76,10 +76,9 @@ namespace Kanban.DAL.Repositories
             if(dto.State == null)
             {
                 dto.State = taskToUpdate.State.ToString();
-                return dto;
             }
 
-            if (taskToUpdate.State != (State)Enum.Parse(typeof(State), dto.State))
+            else
             {
                 ChangeState(taskToUpdate, dto);
             }
@@ -89,11 +88,20 @@ namespace Kanban.DAL.Repositories
             return dto;
         }
 
-        public void DeleteTask(int id)
+        public TaskDto DeleteTask(TaskDto dto)
         {
-            TaskModel task = dbContext.Tasks.FirstOrDefault(task => task.Id == id);
+            TaskModel task = dbContext.Tasks.FirstOrDefault(task => task.Id == dto.Id);
             dbContext.Tasks.Remove(task);
             dbContext.SaveChanges();
+
+            return new TaskDto
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                CreatedAt = task.CreatedAt.ToString(),
+                State = task.State.ToString()
+            };
         }
 
 

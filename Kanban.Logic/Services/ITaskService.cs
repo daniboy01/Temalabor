@@ -10,7 +10,7 @@ namespace Kanban.Logic.Services
         TaskDto GetById(int id);
         TaskDto CreateNewTask(CreateTaskDto dto);
         TaskDto UpdateTask(TaskDto dto);
-        void DeleteTask(int id);
+        TaskDto DeleteTask(int id);
         IEnumerable<TaskColumnDto> GetTaskColumns();
         TaskColumnDto CreateNewColumn(CreateTaskColumnDto dto);
         TaskColumnDto AddTaskToColumn(int id, TaskDto dto);

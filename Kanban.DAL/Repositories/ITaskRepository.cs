@@ -12,7 +12,7 @@ namespace Kanban.DAL.Repositories
         TaskDto GetById(int id);
         TaskDto CreateNewTask(CreateTaskDto dto);
         TaskDto UpdateTask(TaskDto dto);
-        void DeleteTask(int id);
+        TaskDto DeleteTask(TaskDto dto);
         bool TaskIsExist(int id);
 
     }

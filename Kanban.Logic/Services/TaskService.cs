@@ -49,9 +49,11 @@ namespace Kanban.Logic.Services
             return columnRepoitory.MakeTaskDone(id);
         }
 
-        public void DeleteTask(int id)
+        public TaskDto DeleteTask(int id)
         {
-            taskRepoitory.DeleteTask(id);
+            var taskToDelete = GetById(id);
+
+           return taskRepoitory.DeleteTask(taskToDelete);
         }
 
         public IEnumerable<TaskColumnDto> GetTaskColumns()
