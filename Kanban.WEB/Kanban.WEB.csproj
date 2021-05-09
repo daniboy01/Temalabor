@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kanban.DAL\Kanban.DAL.csproj" />
+    <ProjectReference Include="..\Kanban.Logic\Kanban.Logic.csproj" />
   </ItemGroup>
 
 </Project>

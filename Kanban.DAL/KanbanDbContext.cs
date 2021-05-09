@@ -1,8 +1,5 @@
 ﻿using Kanban.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Kanban.DAL
 {
@@ -13,5 +10,7 @@ namespace Kanban.DAL
         public KanbanDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<TaskModel> Tasks { get; set; }
+
+        public DbSet<TaskColumn> TaskColumns { get; set; }
     }
 }
