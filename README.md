@@ -40,6 +40,7 @@ A backend kód háromrétegű architektúra szerint lett fejlesztve. Ezek a rét
 #### Data Access Layer Kanban.Dal
 
 ![image](https://user-images.githubusercontent.com/39564586/117572803-e535dd80-b0d4-11eb-8715-53788f129e78.png)
+
 Három fő részből áll a Dtos, Models és Repositories mappákból, ezek feladatukat tekintve lettek így elszeparálva.
 
 A Dtos mappa tárolja a Data Transfer Objecteket, ilyen típusú információkat szolgáltat a backend a frontend számára.
@@ -153,6 +154,7 @@ public interface ITaskRepository
 ```
 
 ### Business Logic Layer Kanban.Bll
+
 ![image](https://user-images.githubusercontent.com/39564586/117572818-fb439e00-b0d4-11eb-8d9e-08fb48be281e.png)
 
 Egy mappában található az alakmazás egyetlen service osztálya és annak interface. A megjelenítési réteg kéréseit szolgálja ki a Dal rétegtől lekért és transformált adatokkal.
@@ -180,6 +182,7 @@ Az ITaskService és annak implementálása a TaskService delegálja az adatelér
 ### Presentation Layer Kanban.Web
 
 A megjelenítési rétegban találhatók a controller osztályok, amik a frontendről jövő http kéréseket fogadják és adják vissza a megfelelő válaszokat.
+
 ![image](https://user-images.githubusercontent.com/39564586/117572835-0d254100-b0d5-11eb-8e7e-0894dbb812d4.png)
 
 
