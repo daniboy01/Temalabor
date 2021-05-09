@@ -24,3 +24,33 @@ Az alkalmazás az alábbi technológiákat használja:
 - [ASP.NET] - ASP.NET framework felel a backend REST funkcókért
 - [MSSQL] - adatbázis 
 - [Bootstrap] - design
+
+
+## Alkalmazás felépítése
+
+Az alkalmazás klasszikusan felbontható frontend-re és backend-re.
+
+### Backend
+
+A backend kód háromrétegű architektúra szerint lett fejlesztve. Ezek a rétegek a :
+- Data Access Layer
+- Business Logic Layer
+- Presentation Layer
+
+#### Data Access Layer
+
+ide kép
+Három fő részből áll a Dtos, Models és Repositories mappákból, ezek feladatukat tekintve lettek így elszeparálva.
+
+A Dtos mappa tárolja a Data Transfer Objecteket, ilyen típusú információkat szolgáltat a backend a frontend számára.
+
+A Models mappában az alkalmazás entitánsai vannak, ők írják le az adatbázis modelt és a táblák közötti kapcsolatot.
+
+A Repositories mappában Repository Pattern alapján helyezkednek az adatelérési réteg interfészei, ezeket éri el a Bll réteg adatelérés céljából.
+
+### Business Logic Layer
+ide kép
+
+
+
+
