@@ -182,7 +182,7 @@ Az ITaskService és annak implementálása a TaskService delegálja az adatelér
 A megjelenítési rétegban találhatók a controller osztályok, amik a frontendről jövő http kéréseket fogadják és adják vissza a megfelelő válaszokat.
 
 #### ColumnController
-Kezeli az alkalmazás felületéről érkező kérések nagy részét.
+Kezeli az alkalmazás felületéről érkező, oszlopokat érintő kérések nagy részét.
 
 Get() : lekéri az összes TaskColumn entitáns és azokat Dto-ként adja vissza 200-as Ok státusszal.
 ```
@@ -231,7 +231,89 @@ DeleteColumn(): paramétere az id ami alapján törölni szeretnénk az oszlopot
             return Ok(taskService.DeleteColumn(id));
         }
 ```
+#### TaskController
+Kezeli az alkalmazás felületéről érkező, teendőket érintő kérések nagy részét.
 
+Get() : lekéri az összes Task entitáns és azokat Dto-ként adja vissza 200-as Ok státusszal.
+```
+        [HttpGet]
+        public ActionResult<IEnumerable<TaskDto>> Get()
+        {
+            return Ok(taskService.GetAll());
+        }
+```
 
+GetById() : paraméterben kapott id-val lekéri a teendőt, nem létező teendő esetén 404-es NotFound választ küld vissza, sikeres lekérés esetén 200-as Ok válaszban a lekért teendő dto-ként.
+```
+        [HttpGet("{id}")]
+        public ActionResult<TaskDto> GetById(int id)
+        {
+            var task = taskService.GetById(id);
+
+            if(task == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(task);
+        }
+```
+
+CreateNewTask(): a kérés body-ban kap egy CreateTaskDto-t, ha a dto üres 400-as BadRequest, sikeres mentés után 200-as Ok státusszal visszaküldi a lementett teendőt dto-ként.
+```
+        [HttpPost]
+        public ActionResult<TaskDto> CreateNewTask([FromBody] CreateTaskDto dto)
+        {
+            if(dto == null)
+            {
+                return BadRequest();
+            }
+            return Ok(taskService.CreateNewTask(dto));
+        }
+```
+
+UpdateTask(): a kérés body-ban érkező dto alapján frissíti a dto id alapján lekért teendőt. Ha a dto null 400-as BadRequest, sikeres update esetén az updatelt teendőt küldi vissza 200-as Ok státusszal
+```
+        [HttpPut]
+        public ActionResult<TaskDto> UpdateTask([FromBody] TaskDto dto)
+        {
+            var task = taskService.GetById(dto.Id);
+
+            if(task == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(taskService.UpdateTask(dto));
+        }
+```
+DeleteTask(): a paraméterban kapott id alapján kitörli a teendőt. Ha id alapján nem találja akkor 404-es NotFound, sikeres törlés után 200-as ok válaszban a kitörölt teendő dto-t küldi vissza.
+
+```
+        [HttpDelete("{id}")]
+        public ActionResult<TaskDto> DeleteTask(int id)
+        {
+            if (!taskService.TaskIsExist(id))
+            {
+                return NotFound();
+            }
+
+            return Ok(taskService.DeleteTask(id));
+        }
+```
+
+MakeTaskDone(): paraméterben kapott id alapján DONE státuszra állítja a teendőt. Ha id alapján nem találja akkor 404-es NotFound, sikeres művelet után 200-as ok válaszban a módosított teendő dto-t küldi vissza.
+```
+        [HttpPost("{id}")]
+        public ActionResult<TaskDto> MakeTaskDone(int id)
+        {
+            if (!taskService.TaskIsExist(id))
+            {
+                return NotFound();
+            }
+
+            return Ok(taskService.MakeTaskDone(id));
+        }
+```
 
 
